@@ -1,0 +1,292 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYDB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="grid grid-cols-12 h-screen">
+    <div class="col-span-2 bg-gray-900 text-white h-full">
+        <div class="">
+            <!-- logo -->
+            <div class="text-center py-5">
+                <a href="/" class="text-3xl">
+                    MYDATABASE
+                </a>
+            </div>
+            <hr>
+            <!-- menu -->
+            <div class="py-5">
+                <!-- create database form  -->
+                <div class="text-center mb-5">
+                    <div class="bg-gray-900 flex flex-col space-y-2 px-2">
+                        <input
+                            class="rounded-md py-2 px-4 w-full text-sm text-gray-900 outline-none hover:outline-10 hover:outline-blue-600"
+                            type="text" id="IdDatabaseName" placeholder="Enter database name">
+                        <input class="rounded-md py-1 px-4 bg-green-600 w-full hover:bg-green-700 cursor-pointer"
+                            type="button" onclick="createDatabase()" value="Create">
+                    </div>
+                </div>
+                <ul id="IdDatabasesMenuContainer" class="flex flex-col space-y-1 text-sm"></ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-span-10 bg-gray-800 p-10 text-white">
+        <div class="grid grid-cols-12 gap-4">
+            <div class="col-span-12 flex space-x-4 items-end">
+                <div class="flex space-x-2 items-center">
+                    <label class="flex flex-col items-start">
+                        <span>Table name:</span>
+                        <input class="py-1.5 px-2 rounded-md text-gray-900 outline-none" placeholder="Enter table name" type="text" id="IdTableName">
+                    </label>
+                </div>
+                <div>
+                    <label class="flex flex-col items-start">
+                        <span>Number of columns:</span>
+                        <input class="py-1.5 px-2 rounded-md text-gray-900 outline-none" placeholder="Enter" min="0" type="number" value="0" id="IdNumberOfColumns">
+                    </label>
+                </div>
+                <div>
+                    <button onclick="createTableColumns()" id="IdButtonCreateTableColumns" class="py-1.5 px-4 rounded-md bg-blue-600">
+                        Create
+                    </button>
+                </div>
+            </div>
+            <div id="IdTableColumnsContainer" class="col-span-12">
+
+            </div>
+            <div class="col-span-12">
+                <table class="w-full border-collapse border border-slate-500">
+                    <thead>
+                        <tr>
+                            <th class="text-start border border-slate-600 py-2 px-4 ">
+                                Tables
+                            </th>
+                            <th class="text-start border border-slate-600 py-2 px-4 ">
+                                Actions
+                            </th>
+                            <th class="text-start border border-slate-600 py-2 px-4 ">
+                                Rows
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody Id="IdTablesTableContainer">
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="/public/app.js"></script>
+    <script>
+        if (pathname == '/database') {
+            if (queryString.databaseName == undefined || !queryString.databaseName) {
+                location.href = '/'
+            }
+        }
+
+        let tableName = ''
+        let numberOfColumns = 0
+
+        const tableColumnsContainer     = document.getElementById('IdTableColumnsContainer')
+        const tableNameInput            = document.getElementById('IdTableName')
+        const numberOfColumnsInput      = document.getElementById('IdNumberOfColumns')
+        const createTableColumnsButton  = document.getElementById('IdButtonCreateTableColumns')
+
+        const tableColumnsClone =  `<table id="IdTableColumns" class="w-full border-collapse border border-slate-500">
+                    <tr>
+                        <th class="text-center border border-slate-600 py-2 px-4 ">
+                            Name
+                        </th>
+                        <th class="text-center border border-slate-600 py-2 px-4 ">
+                            Type
+                        </th>
+                        <th class="text-center border border-slate-600 py-2 px-4 ">
+                            Required
+                        </th>
+                        <th class="text-center border border-slate-600 py-2 px-4 ">
+                            Auto increment
+                        </th>
+                    </tr>
+                </table>
+                <div colspan="4" class="text-center py-2 px-4">
+                    <button onclick="addColumnToTableColumns()" class="bg-blue-600 py-1.5 px-3 rounded-md hover:bg-blue-800">
+                        Add Column
+                    </button>
+                </div>
+                <div class="text-right mt-4">
+                    <button onclick="createTable()" class="bg-green-600 py-1.5 px-3 rounded-md hover:bg-green-800">
+                        Create
+                    </button>
+                </div>`
+
+        function createTableColumns() {
+
+            tableName = tableNameInput.value;
+            numberOfColumns =  parseInt(numberOfColumnsInput.value);
+            if(!tableName)
+                return alert('Enter table name!')
+            if(!numberOfColumns)
+                return alert('Enter number of Columns!')
+            
+            tableColumnsContainer.innerHTML = ``
+            tableColumnsContainer.innerHTML = tableColumnsClone;
+
+            createTableColumnsButton.classList.add('hidden')
+            numberOfColumnsInput.parentElement.classList.add('hidden')
+            tableNameInput.disabled = true
+
+            const tableColumns = document.getElementById('IdTableColumns')
+
+            for (let i = 0; i < numberOfColumns; i++) {
+                tableColumns.append(tableColumnsRowComponent(i));
+            }
+        }
+
+        function tableColumnsRowComponent(index) {
+            const tr = document.createElement('tr')
+            tr.innerHTML = `<tr>
+                        <td class="text-center border border-slate-600 py-2 px-4 ">
+                            <input class="py-1.5 px-2 rounded-md text-gray-900 outline-none w-full" placeholder="Enter" type="text" name="columnName[${index}]" id="IdColumnName_${index}">
+                        </td>
+                        <td class="text-center border border-slate-600 py-2 px-4 ">
+                            <select name="columnType[${index}]" id="IdColumnType_${index}" class="w-full py-1.5 px-2 rounded-md text-gray-900 outline-none">
+                                <option value="Number">number</option>
+                                <option value="String">string</option>
+                            </select>
+                        </td>
+                        <td class="text-center border border-slate-600 py-2 px-4 ">
+                            <input type="checkbox" name="columnRequired[${index}]" id="IdColumnRequired_${index}">
+                        </td>
+                        <td class="text-center border border-slate-600 py-2 px-4 ">
+                            <input type="checkbox" name="columnAuto[${index}]" id="IdColumnAuto_${index}">
+                        </td>
+                    </tr>`;
+            return tr;
+        }
+
+        async function createTable() {
+            const command = {
+                tableName : tableName,
+                databaseName : queryString.databaseName,
+                columns : []
+            }
+            for (let i = 0; i < numberOfColumns; i++) {
+                let column = {}
+                const name = document.getElementById(`IdColumnName_${i}`).value
+                const type = document.getElementById(`IdColumnType_${i}`).value
+                const auto = document.getElementById(`IdColumnAuto_${i}`).checked
+                const required = document.getElementById(`IdColumnRequired_${i}`).checked
+                if(name && name.trim() != ''){
+                    command.columns.push({
+                        name,
+                        type,
+                        auto,
+                        required
+                    })
+                }
+            }
+
+            if (command.columns.length == 0) {
+                return alert('Create some columns!')
+            }
+
+            const res = await fetch(`${API_BASE_URL}/table/create`, {
+                        method : 'POST',
+                        body : JSON.stringify(command)
+                    })
+
+            const { error, message } = await res.json()
+
+            if (error) {
+                alert(message)
+                return
+            }
+
+            tableColumnsContainer.innerHTML = ``
+
+            createTableColumnsButton.classList.remove('hidden')
+            numberOfColumnsInput.parentElement.classList.remove('hidden')
+            tableNameInput.disabled = false
+            tableNameInput.value = ``
+            numberOfColumnsInput.value = 0
+
+            displayTable()
+            initDatabases()
+        }
+
+        function addColumnToTableColumns(){
+            const tableColumns = document.getElementById('IdTableColumns')
+            tableColumns.append(tableColumnsRowComponent(numberOfColumns))
+            numberOfColumns++
+        }
+
+        async function displayTable() {
+
+            const res = await fetch(`${API_BASE_URL}/database/tables?databaseName=${queryString.databaseName}`, {
+                method : 'GET'
+            })
+            
+            const { data, error, message }  = await res.json()
+            
+            if (error) {
+                return alert(message)
+            }
+
+            const tablesTableContainer = document.getElementById('IdTablesTableContainer');
+
+            tablesTableContainer.innerHTML = ``
+
+            data.forEach(table => {
+                tablesTableContainer.append(tablesTableRowComponent(table))
+            });
+
+        }
+
+        function tablesTableRowComponent(table) {
+            const newTr = document.createElement('tr');
+            newTr.innerHTML = `
+                <td class="text-start border border-slate-600 py-2 px-4">
+                    ${table.name}
+                </td>
+                <td class="text-start border border-slate-600 py-2 px-4">
+                    <div class="flex space-x-2 items-center">
+                        <a href="/table?databaseName=${queryString.databaseName}&tableName=${table.name}" class="py-1.5 px-2 rounded bg-blue-600 hover:bg-blue-700">Browse</a>
+                        <button onClick="deleteTable('${queryString.databaseName}', '${table.name}')" class="py-1.5 px-2 rounded bg-red-600 hover:bg-red-700">Delete</button>
+                    </div>
+                </td>
+                <td class="text-end border border-slate-600 py-2 px-4">
+                    ${table.rowsCount}
+                </td>
+            `
+            return newTr;
+        }
+
+        async function deleteTable(databaseName, tableName){
+            const res = await fetch(`${API_BASE_URL}/table/delete?databaseName=${databaseName}&tableName=${tableName}`, {
+                method : 'DELETE'
+            })
+            const { error, message } = await res.json()
+            if (error) {
+                return alert(message)
+            }
+            displayTable();
+            initDatabases();
+        }
+
+        displayTable();
+        
+    </script>
+</body>
+
+</html>

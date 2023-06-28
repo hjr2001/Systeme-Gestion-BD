@@ -1,0 +1,363 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYDB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="grid grid-cols-12 h-screen">
+    <div class="col-span-2 bg-gray-900 text-white h-full">
+        <div class="">
+            <!-- logo -->
+            <div class="text-center py-5">
+                <a href="/" class="text-3xl">
+                    MYDATABASE
+                </a>
+            </div>
+            <hr>
+            <!-- menu -->
+            <div class="py-5">
+                <!-- create database form  -->
+                <div class="text-center mb-5">
+                    <div class="bg-gray-900 flex flex-col space-y-2 px-2">
+                        <input
+                            class="rounded-md py-2 px-4 w-full text-sm text-gray-900 outline-none hover:outline-10 hover:outline-blue-600"
+                            type="text" id="IdDatabaseName" placeholder="Enter database name">
+                        <input class="rounded-md py-1 px-4 bg-green-600 w-full hover:bg-green-700 cursor-pointer"
+                            type="button" onclick="createDatabase()" value="Create">
+                    </div>
+                </div>
+                <ul id="IdDatabasesMenuContainer" class="flex flex-col space-y-1 text-sm">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-span-10 bg-gray-800 p-10 text-white">
+        <div class="grid grid-cols-12 gap-2">
+            <div class="col-span-12 flex flex-col space-y-2">
+                <div>
+                    <ul class="flex space-x-2 items-center justify-end">
+                        <li>
+                            <button class="py-1.5 px-1.5 rounded-md bg-orange-600 hover:bg-orange-800" onclick="changeAction('IdSearch')"> 
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                                  </svg>                                                                   
+                            </button>
+                        </li>
+                        <li>
+                            <button class="py-1.5 px-1.5 rounded-md bg-green-600 hover:bg-green-800" onclick="changeAction('IdAdd')"> 
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                  </svg>                                  
+                            </button>
+                        </li>
+                        <li>
+                            <button class="py-1.5 px-1.5 rounded-md bg-red-600 hover:bg-red-800" onclick="changeAction('IdDelete')"> 
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                  </svg>                                  
+                            </button>
+                        </li>
+                        <li>
+                            <button class="py-1.5 px-1.5 rounded-md bg-blue-600 hover:bg-blue-800" onclick="changeAction('IdUpdate')"> 
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                  </svg>                                  
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div id="IdSearch" class="commandSection flex flex-col space-y-2 hidden bg-gray-900 rounded-md p-4">
+                    <h5 class="font-bold text-xl  mb-4">
+                        Search :
+                    </h5>
+                    <table id="IdSearchTableFields" class="w-full border-collapse border border-slate-500"></table>
+                    <div class="flex justify-end items-center space-x-2">
+                        <button onclick="search()" class="bg-orange-600 py-1.5 px-2 rounded-md hover:bg-orange-800">
+                            Search
+                        </button>
+                        <button onclick="reset()" class="bg-blue-600 py-1.5 px-2 rounded-md hover:bg-blue-800">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="IdAdd" class="commandSection flex flex-col space-y-2 bg-gray-900 rounded-md pt-4 pl-4 pr-4">
+                    <h5 class="font-bold text-xl">
+                        Add :
+                    </h5>
+                    <div class="flex justify-between items-center space-x-4">
+                        <div id="IdAddFields" class="overflow-auto flex space-x-2 py-4"></div>
+                        <div class="text-right">
+                            <button onclick="add()" class="bg-green-600 py-1.5 px-2 rounded-md hover:bg-green-800">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="IdUpdate" class="commandSection flex flex-col space-y-2 hidden">
+                    <textarea class="py-3 px-3 rounded-md text-gray-900 text-sm font-semibold outline-none" id="IdAddRowSchema" cols="30" rows="6"></textarea>
+                    <div class="text-right">
+                        <button onclick="updateRow()" class="bg-blue-600 py-1.5 px-2 rounded-md hover:bg-blue-800">
+                            Update
+                        </button>
+                    </div>
+                </div>
+                <div id="IdDelete" class="commandSection flex flex-col space-y-2 hidden">
+                    <textarea class="py-3 px-3 rounded-md text-gray-900 text-sm font-semibold outline-none" id="IdAddRowSchema" cols="30" rows="6"></textarea>
+                    <div class="text-right">
+                        <button onclick="deleteRow()" class="bg-red-600 py-1.5 px-2 rounded-md hover:bg-red-800">
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-span-12 max-h-[600px] overflow-auto mt-2 p-4 bg-gray-900 rounded-md">
+                <table class="w-full border-collapse border border-slate-500 ">
+                    <thead id="IdTableHead"></thead>
+                    <tbody id="IdTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="/public/app.js"></script>
+    <script>
+
+        if (queryString.databaseName == undefined || !queryString.databaseName || queryString.tableName == undefined || !queryString.tableName) {
+            location.href = '/'
+        }
+        let columnSize = 0
+
+        let columnsNames = []
+
+        async function displayTable(){
+            const res = await fetch(`${API_BASE_URL}/database/table?databaseName=${queryString.databaseName}&tableName=${queryString.tableName}`, {
+                method : 'GET'
+            })
+            const {data, error, message} = await res.json()
+
+            if (error) {
+                return alert(message)
+            }
+            setUpSeachFields(data.columns)
+            setUpAddFields(data.columns)
+            tableComponent(data);
+        }
+
+        function reset(){
+            displayTable()
+        }
+
+        function setUpAddFields(columns){
+            const addFields = document.getElementById('IdAddFields')
+            addFields.innerHTML=``
+            columnsNames=[]
+            columns.forEach((column, index) => {
+                if (!column.auto) {
+                    const newSearchDivField = document.createElement('div')
+                    newSearchDivField.innerHTML = `<div class="flex space-x-2 items-center">
+                        <label class="flex flex-col items-start">
+                            <div class="flex justify-between w-full items-center">
+                                <span class="font-bold">${column.name}</span>
+                                ${
+                                    column.required ? `<span title="required!" class="text-red-400"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                    </svg>
+                                </span>` : ''
+                                }
+                            </div>
+                            
+                            <input class="py-1.5 px-2 rounded-md text-gray-900 outline-none" placeholder="Enter ${column.name.toLowerCase()}" type="text" id="IdAddTable${column.name.toLowerCase()}Field" name="${column.name}">
+                        </label>
+                    </div>`;
+                    addFields.append(newSearchDivField);
+                    columnsNames.push({
+                        name : column.name.toLowerCase(),
+                        type : column.type
+                    })
+                }
+               
+            })
+        }
+
+        function setUpSeachFields(columns) {
+            const searchTableFields = document.getElementById('IdSearchTableFields')
+            searchTableFields.innerHTML = ''
+            columns.forEach((column, index) => {
+                const newSearchTrField = document.createElement('tr')
+                newSearchTrField.innerHTML = `
+                                <td class="text-start p-2 border border-slate-500">
+                                    <input class="py-1.5 px-2 rounded-md text-gray-900 outline-none w-full" placeholder="Enter" type="text" value="${column.name}" id="IdSearchFieldName_${index}" disabled>
+                                </td>
+                                <td class="text-start p-2 w-[250px] border border-slate-500">
+                                    <select id="IdSearchFieldOperator_${index}" class="text-center w-full py-1.5 px-2 rounded-md text-gray-900 outline-none">
+                                        <option value="">Select Operator</option>
+                                        <option value="=">=</option>
+                                        <option value="like">Like</option>
+                                        <option value="not">!=</option>
+                                        ${
+                                            column.type == 'Number' ? ` <option value=">">&gt;</option>
+                                        <option value="&lt;">&lt;</option>
+                                        <option value=">=">&ge;</option>
+                                        <option value="&lt;=">&le;</option>` : ''
+                                        }
+                                    </select>
+                                </td>
+                                <td class="text-center p-2 w-[400px] border border-slate-500">
+                                    <input class="py-1.5 px-2 rounded-md text-gray-900 outline-none w-full" placeholder="Enter" type="text" id="IdSearchFieldValue_${index}">
+                                </td>`;
+                searchTableFields.append(newSearchTrField)
+                if (index != columns.length - 1) {
+                    const newSearchTrFieldLogicalOperator = document.createElement('tr')
+                    newSearchTrFieldLogicalOperator.innerHTML = `<td colspan="3" class="text-center p-2 border border-slate-500">
+                                <select id="IdSearchFieldLogicalOperator_${index}" class="text-center w-full py-1.5 px-2 rounded-md text-gray-900 outline-none">
+                                    <option value="">Select logical operator</option>
+                                    <option value="&&">AND</option>
+                                    <option value="||">OR</option>
+                                </select>
+                            </td>`;
+                    searchTableFields.append(newSearchTrFieldLogicalOperator)
+                }
+            });
+            columnSize = columns.length;
+        }
+
+        async function search(){
+            let command = {
+                databaseName : queryString.databaseName,
+                tableName : queryString.tableName,
+                search : {}
+            }
+
+            for (let i = 0; i < columnSize; i++) {
+                const name = document.getElementById(`IdSearchFieldName_${i}`).value
+                const operator = document.getElementById(`IdSearchFieldOperator_${i}`).value
+                const value = document.getElementById(`IdSearchFieldValue_${i}`).value
+                if (value && operator) {
+                    command.search[name] = {
+                    value,
+                    operator
+                    }
+                    if (i < columnSize-1) {
+                        const logicalOperator = document.getElementById(`IdSearchFieldLogicalOperator_${i}`).value
+                        if (logicalOperator) {
+                            command.search[`logicalOperator${i}`] = logicalOperator
+                        }
+                    }
+                }
+            }
+
+            const res = await fetch(`${API_BASE_URL}/table/search`, {
+                        method : 'POST',
+                        body : JSON.stringify(command)
+                    })
+
+            const { error, message, data } = await res.json()
+
+            if (error) {
+                alert(message)
+                return
+            } 
+
+            tableBodyComponent(data)
+
+        }
+
+        function tableComponent(data) {
+            tableHeadComponent(data.columns)
+            tableBodyComponent(data.rows)
+            // table.append(tableBodyComponent(data.rows))
+        }
+
+        function tableHeadComponent(columns) {
+            const tableHead = document.getElementById('IdTableHead')
+            tableHead.innerHTML = ''
+            const newTr = document.createElement('tr');
+            columns.forEach(column => {
+                const newTh = document.createElement('th');
+                newTh.classList.add("text-start", "border", "border-slate-600", "p-2")
+                newTh.innerHTML = column.name
+                newTr.append(newTh)
+            });
+            tableHead.append(newTr)
+        }
+
+        function tableBodyComponent(rows) {
+            const tableBody = document.getElementById('IdTableBody')
+            tableBody.innerHTML = ''
+            rows.forEach(row => {
+                const newTr = document.createElement('tr');
+                row.cells.forEach(cell => {
+                    const newTd = document.createElement('td');
+                    newTd.classList.add("text-start", "border", "border-slate-600", "p-2")
+                    newTd.innerHTML = cell.value
+                    newTr.append(newTd)
+                });
+                tableBody.append(newTr)
+            });
+        }
+
+        
+        function changeAction(action) {
+            const commandSections = document.querySelectorAll('.commandSection')
+            commandSections.forEach(section => {
+                if (section.id == action) {
+                    section.classList.toggle('hidden')
+                }
+                else{
+                    section.classList.add('hidden')
+                }
+            });
+        }
+
+        async function add() {
+            let command = {
+                databaseName : queryString.databaseName,
+                tableName : queryString.tableName,
+                rows : {}
+            } 
+
+            columnsNames.forEach(column => {
+                const col = document.getElementById(`IdAddTable${column.name}Field`)
+                if (col.value && col.value.trim() != '') {
+                    if (column.type == 'Number') {
+                        command.rows[col.name] = Number(col.value);
+                    } else {
+                        command.rows[col.name] = col.value;
+                    }
+                }
+            });
+
+            const res = await fetch(`${API_BASE_URL}/table/addRow`, {
+                method : 'POST',
+                body : JSON.stringify(command)
+            })
+
+            const { error, message } = await res.json()
+
+            if (error) {
+                return alert(message)
+            }
+
+            displayTable()
+        }
+
+        displayTable()
+
+    </script>
+</body>
+
+
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYDB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="grid grid-cols-12 h-screen">
+    <div class="col-span-2 bg-gray-900 text-white h-full">
+        <div class="">
+            <!-- logo -->
+            <div class="text-center py-5">
+                <a href="/" class="text-3xl">
+                    MYDATABASE
+                </a>
+            </div>
+            <hr>
+            <!-- menu -->
+            <div class="py-5">
+                <!-- create database form  -->
+                <div class="text-center mb-5">
+                    <div class="bg-gray-900 flex flex-col space-y-2 px-2">
+                        <input
+                            class="rounded-md py-2 px-4 w-full text-sm text-gray-900 outline-none hover:outline-10 hover:outline-blue-600"
+                            type="text" id="IdDatabaseName" placeholder="Enter database name">
+                        <input class="rounded-md py-1 px-4 bg-green-600 w-full hover:bg-green-700 cursor-pointer"
+                            type="button" onclick="createDatabase()" value="Create">
+                    </div>
+                </div>
+                <ul id="IdDatabasesMenuContainer" class="flex flex-col space-y-1 text-sm">
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-span-10 bg-gray-800 p-10 text-white">
+
+    </div>
+    <script src="/public/app.js"></script>
+</body>
+
+</html>

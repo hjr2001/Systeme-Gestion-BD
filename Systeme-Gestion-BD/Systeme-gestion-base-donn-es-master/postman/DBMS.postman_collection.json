@@ -1,0 +1,569 @@
+{
+	"info": {
+		"_postman_id": "07418434-47c5-49c2-afd3-a79a0b1c0f86",
+		"name": "DBMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "15225302"
+	},
+	"item": [
+		{
+			"name": "Database requests",
+			"item": [
+				{
+					"name": "get all databses (names)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": "{{BASE_URL}}/databases"
+					},
+					"response": [
+						{
+							"name": "get all databses (names)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": "localhost:3000/databases"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": false,\n    \"message\": \"Done\",\n    \"data\": [\n        \"{Names}\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "create database",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"databaseName\" : \"{Your database name}\"\r\n}"
+						},
+						"url": "{{BASE_URL}}/database/create"
+					},
+					"response": [
+						{
+							"name": "create database",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"databaseName\" : \"db_example\"\r\n}"
+								},
+								"url": "localhost:3000/database/create"
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\"error\":false,\"message\":\"Done\"}"
+						}
+					]
+				},
+				{
+					"name": "get database tables (names / rows count)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{BASE_URL}}/database/tables?databaseName={your database name}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"database",
+								"tables"
+							],
+							"query": [
+								{
+									"key": "databaseName",
+									"value": "{your database name}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get database tables (names / rows count)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BASE_URL}}/database/tables?databaseName=db_example",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"database",
+										"tables"
+									],
+									"query": [
+										{
+											"key": "databaseName",
+											"value": "db_example"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": false,\n    \"message\": \"Done\",\n    \"data\": [\n        {\n            \"name\": \"table name\",\n            \"rowsCount\" : 1526\n        }\n        ...\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "delete database",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/database/delete?databaseName={Your database name}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"database",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "databaseName",
+									"value": "{Your database name}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete database",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/database/delete?databaseName=db_example",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"database",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "databaseName",
+											"value": "db_example"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"error\": false,\r\n    \"message\": \"Done\"\r\n}"
+						}
+					]
+				},
+				{
+					"name": "get table from database",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/database/table?databaseName={Your database name}&tableName={Your table name}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"database",
+								"table"
+							],
+							"query": [
+								{
+									"key": "databaseName",
+									"value": "{Your database name}"
+								},
+								{
+									"key": "tableName",
+									"value": "{Your table name}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get all tables of database",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/database/table?databaseName=db_example&tableName=table_example",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"database",
+										"table"
+									],
+									"query": [
+										{
+											"key": "databaseName",
+											"value": "db_example"
+										},
+										{
+											"key": "tableName",
+											"value": "table_example"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": false,\n    \"message\": \"Done\",\n    \"data\": {\n        \"name\": \"table_name\",\n        \"index\": 3,\n        \"columns\": [\n            {\n                \"name\": \"column_name\",\n                \"type\": \"column_type\",\n                \"auto\": \"column_is_auto_increment\",\n                \"required\": \"column_is_required\"\n            },\n            ...\n        ],\n        \"rows\": [\n            {\n                \"cells\": [\n                    {\n                        \"name\": \"row_cell_name\",\n                        \"value\": \"row_cell_value\"\n                    },\n                    ...\n                    ,\n                    {\n                        \"name\": \"row_cell_name\",\n                        \"value\": \"row_cell_value\"\n                    }\n                ]\n            },\n            ...\n            ,{\n                \"cells\": [\n                    {\n                        \"name\": \"row_cell_name\",\n                        \"value\": \"row_cell_value\"\n                    },\n                    ...\n                    ,\n                    {\n                        \"name\": \"row_cell_name\",\n                        \"value\": \"row_cell_value\"\n                    }\n                ]\n            }\n        ],\n        \"rowsCount\": 2\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Table requests",
+			"item": [
+				{
+					"name": "create table",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"databaseName\": \"{Your database name}\",\r\n    \"tableName\": \"{Your table name}\",\r\n    \"columns\": [\r\n        {\r\n            \"columnName\": \"{Your table column name (type : string)}\",\r\n            \"required\": \"{if this column does not accept null set it as true else false (type : boolean)}\",\r\n            \"type\": \"{Column type [Number | String] (type : string)}\",\r\n            \"auto\": \"if this column is auto increment set it as true else false [only one column can be auto incremant] (type : boolean)\"\r\n        }\r\n        ...\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BASE_URL}}/table/create"
+					},
+					"response": [
+						{
+							"name": "create table example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"databaseName\": \"db_example\",\r\n    \"tableName\": \"table_example\",\r\n    \"columns\": [\r\n        {\r\n            \"columnName\": \"id\",\r\n            \"required\": true,\r\n            \"type\": \"Number\",\r\n            \"auto\": true\r\n        },\r\n        {\r\n            \"columnName\": \"first_name\",\r\n            \"required\": true,\r\n            \"type\": \"String\",\r\n            \"auto\": false\r\n        },\r\n        {\r\n            \"columnName\": \"last_name\",\r\n            \"required\": true,\r\n            \"type\": \"String\",\r\n            \"auto\": false\r\n        },\r\n        {\r\n            \"columnName\": \"email\",\r\n            \"required\": true,\r\n            \"type\": \"String\",\r\n            \"auto\": false\r\n        },\r\n        {\r\n            \"columnName\": \"age\",\r\n            \"required\": true,\r\n            \"type\": \"Number\",\r\n            \"auto\": false\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{BASE_URL}}/table/create"
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "delete table",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/table/delete?databaseName={Your database name}&tableName={Your tble name}",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"table",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "databaseName",
+									"value": "{Your database name}"
+								},
+								{
+									"key": "tableName",
+									"value": "{Your tble name}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "delete table",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/table/delete?databaseName=db_example&tableName=table_example",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"table",
+										"delete"
+									],
+									"query": [
+										{
+											"key": "databaseName",
+											"value": "db_example"
+										},
+										{
+											"key": "tableName",
+											"value": "table_example"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"error\": false,\r\n    \"message\": \"Done\"\r\n}"
+						}
+					]
+				},
+				{
+					"name": "add row",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"databaseName\": \"{Your dtabase name}\",\r\n    \"tableName\": \"{Your table name}\",\r\n    \"rows\": {\r\n        \"{1st column name}\": \"{value}\",\r\n        \"{2nd column name}\": \"{value}\",\r\n        \"{3rd column name}\": \"{value}\",\r\n        \"{4th column name}\": \"{value}\"\r\n        ...\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/table/addRow"
+					},
+					"response": [
+						{
+							"name": "add row",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"databaseName\": \"db_example\",\r\n    \"tableName\": \"table_example\",\r\n    \"rows\": {\r\n        \"first_name\": \"first_name_example\",\r\n        \"last_name\": \"last_name_example\",\r\n        \"age\": 100,\r\n        \"email\": \"email_example@example.ex\"\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "localhost:3000/table/addRow"
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "search",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"databaseName\": \"{your database name}\",\r\n    \"tableName\": \"{your table name}\",\r\n    \"search\": {\r\n        \"{1st column name}\": {\r\n            \"operator\": \"[=, !=, like, <, >, <=, >=]\",\r\n            \"value\": \"{Th value you are sreaching fot it}\"\r\n        },\r\n        \"{2st column name}\": {\r\n            \"operator\": \"[=, !=, like, <, >, <=, >=]\",\r\n            \"value\": \"{Th value you are sreaching fot it}\"\r\n        }\r\n        ...\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/table/search"
+					},
+					"response": [
+						{
+							"name": "search",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"databaseName\": \"db_example\",\r\n    \"tableName\": \"table_example\",\r\n    \"search\": {\r\n        \"first_name\": {\r\n            \"operator\": \"like\",\r\n            \"value\": \"exam\"\r\n        }\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "localhost:3000/table/search"
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"databaseName\": \"{your database name}\",\r\n    \"tableName\": \"{your table name}\",\r\n    \"search\": {\r\n        \"{1st column name}\": {\r\n            \"operator\": \"[=, !=, like, <, >, <=, >=]\",\r\n            \"value\": \"{The value you want to delete it}\"\r\n        },\r\n        \"{2st column name}\": {\r\n            \"operator\": \"[=, !=, like, <, >, <=, >=]\",\r\n            \"value\": \"{The value you want to delete it}\"\r\n        }\r\n        ...\r\n    }\r\n}"
+						},
+						"url": "localhost:3000/table/deleteRows"
+					},
+					"response": [
+						{
+							"name": "delete",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"databaseName\": \"db_example\",\r\n    \"tableName\": \"table_example\",\r\n    \"search\": {\r\n        \"id\": {\r\n            \"operator\": \"=\",\r\n            \"value\": \"1\"\r\n        }\r\n    }\r\n}"
+								},
+								"url": "localhost:3000/table/deleteRows"
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"error\": false,\r\n    \"message\": \"Done\"\r\n}"
+						}
+					]
+				},
+				{
+					"name": "delete Copy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"databaseName\": \"{Your dtabase name}\",\r\n    \"tableName\": \"{Your table name}\",\r\n    \"search\": {\r\n         \"{1st column name}\": {\r\n            \"operator\": \"[=, !=, like, <, >, <=, >=]\",\r\n            \"value\": \"{Th value you are sreaching fot it}\"\r\n        },\r\n        \"{2st column name}\": {\r\n            \"operator\": \"[=, !=, like, <, >, <=, >=]\",\r\n            \"value\": \"{Th value you are sreaching fot it}\"\r\n        }\r\n    },\r\n    \"rows\": {\r\n        \"{1st column name}\": \"{New value}\",\r\n        \"{2nd column name}\": \"{New value}\",\r\n        \"{3rd column name}\": \"{New value}\",\r\n        \"{4th column name}\": \"{New value}\"\r\n    }\r\n}"
+						},
+						"url": "localhost:3000/table/updateRow"
+					},
+					"response": [
+						{
+							"name": "delete Copy",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"databaseName\": \"db_example\",\r\n    \"tableName\": \"table_example\",\r\n    \"search\": {\r\n        \"id\": {\r\n            \"operator\": \"=\",\r\n            \"value\": \"1\"\r\n        }\r\n    },\r\n    \"rows\": {\r\n        \"last_name\": \"updated_last_name_example\"\r\n    }\r\n}"
+								},
+								"url": "{{BASE_URL}}/table/updateRow"
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": "{\r\n    \"error\": false,\r\n    \"message\": \"Done\"\r\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "localhost:3000",
+			"type": "string"
+		}
+	]
+}
